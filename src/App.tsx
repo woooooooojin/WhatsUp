@@ -8,6 +8,7 @@ import { createGlobalStyle, styled } from "styled-components"
 import reset from "styled-reset"
 import { useEffect, useState } from "react"
 import LoadingScreen from "./components/LoadingScreen"
+import ProtectedRoute from "./components/ProtectedRoute"
 
 const Globalstyles = createGlobalStyle`
   ${reset}
@@ -30,15 +31,15 @@ const Wrapper = styled.div`
 const router = createBrowserRouter([
   {
     path:'/',
-    element:<Layout/>,
+    element:<ProtectedRoute><Layout/></ProtectedRoute>,
     children:[
       {
         path:"",
-        element:<Home/>
+        element:<Home/>,
       },
       {
         path:'profile',
-        element:<Profile/>
+        element:<Profile/>,
       }
     ]
   },

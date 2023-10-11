@@ -1,53 +1,13 @@
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth"
 import { useState } from "react"
-import { styled } from "styled-components"
+import { auth } from "../firebase"
+import { Link, useNavigate } from "react-router-dom"
+import { FirebaseError } from "firebase/app"
+import { Error, Form, Input, Switcher, Title, Wrapper } from "../components/AuthCommon"
 
-const Wrapper =styled.div`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 420px;
-  border: 1px solid #fff;
-  padding: 50px 0;
-  border-radius: 10px;
-`
-const Form = styled.form`
-  margin-top: 70px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  width: 100%;
-  padding: 0 30px;
-`
-const Input = styled.input`
-  padding: 10px 20px;
-  border-radius: 50px;
-  border: none;
-  font-size: 16px;
-  &:focus{
-    outline: 2.5px dashed yellow;
-    
-  }
-  &[type='submit']{
-    cursor: pointer;
-    outline: none;
-    transition: .3s;
-    &:hover{
-      opacity: 0.8;
-    }
-  }
-  
-`
-const Title = styled.h1`
-  font-size: 42px;
-  
-`
-const Error = styled.span`
-  color: tomato;
-  font-size: 12px;
-`
 
 export default function CreateAccount() {
+  const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -65,12 +25,21 @@ export default function CreateAccount() {
     }
   }
 
-  const onSubmit = (e:React.FormEvent<HTMLFormElement>)=>{
+  const onSubmit = async (e:React.FormEvent<HTMLFormElement>)=>{
     e.preventDefault()
+    setError("")
+    if(loading || name === "" || email === "" || password === "") return; //로딩중이거나 이름 이메일 비번이 비었을경우 함수종료
     try{
-
+      const credential = await createUserWithEmailAndPassword(auth, email, password)
+      console.log(credential.user)
+      await updateProfile(credential.user,{
+        displayName : name,
+      })
+      navigate('/')
     }catch(e){
-
+      if(e instanceof FirebaseError){
+        setError(e.message)
+      }
     }finally{
       setLoading(false)
     }
@@ -92,6 +61,11 @@ export default function CreateAccount() {
           <Input type="submit" value={loading ? 'loading' : '계정생성'} />
         </Form>
         {error !== '' ? <Error>{error}</Error> : null}
+
+        <Switcher>
+          이미 계정이 있으신가요? <Link to='/login'>로그인 하기</Link>
+        </Switcher>
+
       </Wrapper>
     </>
   )
