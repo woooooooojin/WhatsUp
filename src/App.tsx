@@ -9,6 +9,7 @@ import reset from "styled-reset"
 import { useEffect, useState } from "react"
 import LoadingScreen from "./components/LoadingScreen"
 import ProtectedRoute from "./components/ProtectedRoute"
+import { auth } from "./firebase"
 
 const Globalstyles = createGlobalStyle`
   ${reset}
@@ -58,10 +59,8 @@ function App() {
 
   const [loading, setLoding] = useState(true)
   const init = async() => {
-
-    setTimeout(() => {
-      setLoding(false)
-    }, 2000);
+    await auth.authStateReady()
+    setLoding(false)
   }
   useEffect(()=>{init()},[])
 
