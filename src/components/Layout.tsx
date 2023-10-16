@@ -1,22 +1,21 @@
-import { onAuthStateChanged } from "firebase/auth";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import { auth } from "../firebase";
+import Title from "./Title";
 
 const Wrapper = styled.div`
-  display: grid;
-  gap: 50px;
-  grid-template-columns: 1fr 4fr;
-  padding: 50px 0;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   max-width: 1024px;
   border: 1px solid #ccc;
 `
 const Menu = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: right;
   gap: 20px;
+  padding: 20px 35px;
 `
 const MenuItem = styled.div`
   cursor: pointer;
@@ -80,6 +79,9 @@ export default function Layout() {
         </svg>
         </MenuItem>
       </Menu>
+
+      <Title/>
+    
       <Outlet/>
 
     </Wrapper>
