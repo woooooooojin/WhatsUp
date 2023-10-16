@@ -1,7 +1,8 @@
-import { addDoc, collection } from "firebase/firestore"
+import { addDoc, collection, updateDoc } from "firebase/firestore"
 import React, { FormEvent, useState } from "react"
 import { styled } from "styled-components"
-import { auth, db } from "../firebase"
+import { auth, db, storage } from "../firebase"
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage"
 
 const Form = styled.form`
     display: flex;
@@ -77,7 +78,8 @@ export default function Post() {
     
     const onFileChange = (e:React.ChangeEvent<HTMLInputElement>)=>{
         const {files} = e.target;
-        if(files && files.length === 1){
+        if(files && files.length === 1 ){
+            
             setFile(files[0])
         }
 
@@ -90,12 +92,23 @@ export default function Post() {
 
         try{
             setLoading(true)
-            await addDoc(collection(db,'posts'),{
+            const doc = await addDoc(collection(db,'posts'),{
                 post,
                 createdAt : Date.now(),
                 username : user.displayName || "anonymous",
                 userId: user.uid,
             }) //어떤 컬렉션에 document를 생성하고 싶은지 지정 후 원하는 데이터를 만들어서 넣어줌
+
+            if(file && file.size < 1024 * 1024){//파일이 존재하거나 파일 사이즈가 1메가 이하일경우
+                const locationRef =  ref(storage, `posts/${user.uid}-${user.displayName}/${doc.id}`) // posts / 유저의고유아이디-유저이름 / 문서의아이디
+                const result =  await uploadBytes(locationRef,file)
+                const url = await getDownloadURL(result.ref)
+                await updateDoc(doc,{
+                    photo: url,
+                }) // updateDoc은 업데이트할 document에 대한 참조와(doc) 업데이트할 데이터가 필요
+            } //업로드된 파일이 저장되는 폴더명과 파일명을 지정 
+            setPost('') //post초기화
+            setFile(null)//File 초기화
         }catch(e){
             console.log(e)
         }finally{
@@ -104,10 +117,13 @@ export default function Post() {
 
     }
 
+
+
+
   return (
     <>
         <Form onSubmit={onSubmit}>
-            <TextArea rows={5} maxLength={150} onChange={onChange} value={post} placeholder="What's Up??"/>
+            <TextArea required rows={5} maxLength={150} onChange={onChange} value={post} placeholder="What's Up??"/>
             <Flexbox>
                 <FileButton htmlFor="file">{file ? 'photo added' : "add photo"}</FileButton>
                 <FileInput onChange={onFileChange} type="file" id='file' accept="image/*"></FileInput>
