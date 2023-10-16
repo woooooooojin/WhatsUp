@@ -1,5 +1,7 @@
-import { useState } from "react"
+import { addDoc, collection } from "firebase/firestore"
+import React, { FormEvent, useState } from "react"
 import { styled } from "styled-components"
+import { auth, db } from "../firebase"
 
 const Form = styled.form`
     display: flex;
@@ -81,9 +83,30 @@ export default function Post() {
 
     } // 파일이 존재하거나 1개만 있을때 state에 저장한다
 
+    const onSubmit = async (e:React.FormEvent<HTMLFormElement>) =>{
+        e.preventDefault()
+        const user = auth.currentUser
+        if(!user || loading || post === '' || post.length > 150) return; //로그인이 안되어있거나 로딩중이거나 포스트의 글이 공백이거나 길이가 150이상이면 함수종료
+
+        try{
+            setLoading(true)
+            await addDoc(collection(db,'posts'),{
+                post,
+                createdAt : Date.now(),
+                username : user.displayName || "anonymous",
+                userId: user.uid,
+            }) //어떤 컬렉션에 document를 생성하고 싶은지 지정 후 원하는 데이터를 만들어서 넣어줌
+        }catch(e){
+            console.log(e)
+        }finally{
+            setLoading(false)
+        }
+
+    }
+
   return (
     <>
-        <Form>
+        <Form onSubmit={onSubmit}>
             <TextArea rows={5} maxLength={150} onChange={onChange} value={post} placeholder="What's Up??"/>
             <Flexbox>
                 <FileButton htmlFor="file">{file ? 'photo added' : "add photo"}</FileButton>
