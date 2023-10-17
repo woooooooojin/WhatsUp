@@ -125,7 +125,7 @@ export default function Post() {
         <Form onSubmit={onSubmit}>
             <TextArea required rows={5} maxLength={150} onChange={onChange} value={post} placeholder="What's Up??"/>
             <Flexbox>
-                <FileButton htmlFor="file">{file ? 'photo added' : "add photo"}</FileButton>
+                <FileButton htmlFor="file">{file ? 'added photo' : "add photo"}</FileButton>
                 <FileInput onChange={onFileChange} type="file" id='file' accept="image/*"></FileInput>
                 <SubmitButton type="submit" value={loading ? 'posting...' : 'post'}></SubmitButton>
             </Flexbox>

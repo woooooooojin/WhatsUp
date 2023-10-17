@@ -3,7 +3,7 @@ import { IPost } from "./Timeline";
 
 const Wrapper = styled.div`
     display: grid;
-    grid-template-columns: 3fr 1fr;
+    grid-template-columns: 3fr 0fr;
     padding: 20px;
     border: 1px solid rgba(255,255,255,0.5);
     border-radius: 15px;
@@ -38,8 +38,10 @@ export default function PostUI({username, photo, post}:IPost) {
                 <Username>{username}</Username>
                 <Message>{post}</Message>
                 </Column>
-
-            { photo ? <Column> <Photo src={photo}/> </Column> : null}
+                
+                <Column>
+                    { photo ?  <Photo src={photo}/>: null}
+                </Column> 
             </Wrapper>
         </Container>
 
