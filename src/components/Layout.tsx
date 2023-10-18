@@ -8,7 +8,6 @@ const Wrapper = styled.div`
   flex-direction: column;
   width: 100%;
   max-width: 1024px;
-  border: 1px solid #ccc;
 `
 const Menu = styled.div`
   display: flex;

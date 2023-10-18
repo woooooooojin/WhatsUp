@@ -14,7 +14,9 @@ export interface IPost {
     id:string;
 }
 
-const Wrapper = styled.div``
+const Wrapper = styled.div`
+  
+`
 
 export default function Timeline() {
     const [posts, setPosts] = useState<IPost[]>([])
