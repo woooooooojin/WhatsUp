@@ -100,7 +100,7 @@ export default function Post() {
             }) //어떤 컬렉션에 document를 생성하고 싶은지 지정 후 원하는 데이터를 만들어서 넣어줌
 
             if(file && file.size < 1024 * 1024){//파일이 존재하거나 파일 사이즈가 1메가 이하일경우
-                const locationRef =  ref(storage, `posts/${user.uid}-${user.displayName}/${doc.id}`) // posts / 유저의고유아이디-유저이름 / 문서의아이디
+                const locationRef =  ref(storage, `posts/${user.uid}/${doc.id}`) // posts / 유저의고유아이디 / 문서의아이디
                 const result =  await uploadBytes(locationRef,file)
                 const url = await getDownloadURL(result.ref)
                 await updateDoc(doc,{
