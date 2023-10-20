@@ -127,7 +127,7 @@ export default function Profile() {
 
   const onEditName = async ()=>{
     if(!user) return;
-    setEditName((prev) => !prev);
+    // setEditName((prev) => !prev);
     if(!editName) return;
     try{
       await updateProfile(user,{
@@ -136,12 +136,16 @@ export default function Profile() {
     }catch(e){
       console.log(e)
     }finally{
-      setEditName(false)
+      setEditName(!editName)
     }
 
   }
 
-  
+  const onEditClick =()=>{
+    setEditName(true)
+    setName(user?.displayName || "Anonymous");
+    
+  }
  
 
 
@@ -164,8 +168,8 @@ export default function Profile() {
 
 
           <NameWrap>
-           <EditName onClick={onEditName} >{editName ? '이름저장' : '이름수정'}</EditName>
-           {/* <EditSubmit onClick={onEditName}></EditSubmit> */}
+           {editName ? null : <EditName onClick={onEditClick}>이름수정</EditName> }
+           {editName ? <EditSubmit onClick={onEditName}>이름저장</EditSubmit> : null}
 
           </NameWrap>
 

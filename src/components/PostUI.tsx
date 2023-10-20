@@ -3,7 +3,7 @@ import { IPost } from "./Timeline";
 import { auth, db, storage } from "../firebase";
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { deleteObject, getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const Wrapper = styled.div`
     display: grid;
@@ -146,6 +146,7 @@ export default function PostUI({username, photo, post, userId, id}:IPost) {
             setValue('')
         }
     }
+  
 
     //사진 수정
     const [file, setFile] = useState<File | null>(null)
@@ -160,13 +161,14 @@ export default function PostUI({username, photo, post, userId, id}:IPost) {
             if(files && files.length === 1 && files[0].size < 1024 * 1024){
                 setFile(files[0])
             }
+            setEditFile(true)
            
 
     }
     
     const onClickFile = async ()=>{
         // setEditFile((prev) => !prev)
-        // if(!editFile) return;
+        if(!editFile) return;
 
 
         try{
@@ -187,10 +189,11 @@ export default function PostUI({username, photo, post, userId, id}:IPost) {
             console.log(e)
         }finally{
             setFile(null)
-            setEditFile(!editFile)
+            setEditFile(false)
         }
 
     }
+    
 
 
   return (
@@ -215,8 +218,8 @@ export default function PostUI({username, photo, post, userId, id}:IPost) {
                         <EditPhotoInput onChange={onFileChange}  type="file" id="input_file" accept="image/*" />
                         
                         <BtnBox>
-                            {user?.uid === userId ? <EditPhotoBtn  htmlFor="input_file">사진선택</EditPhotoBtn> : null }
-                            <SubmitBtn  onClick={onClickFile}>저장하기</SubmitBtn>
+                            {user?.uid === userId ? <EditPhotoBtn  htmlFor="input_file">사진수정</EditPhotoBtn> : null }
+                            {editFile ? <SubmitBtn  onClick={onClickFile}>저장하기</SubmitBtn> : null }
                         </BtnBox>
 
                     </Column> : null
