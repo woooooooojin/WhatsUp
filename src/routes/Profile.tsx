@@ -3,7 +3,7 @@ import { auth, db, storage } from "../firebase"
 import React, { useEffect, useState } from "react"
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage"
 import {  updateProfile } from "firebase/auth"
-import { collection, getDocs, limit, orderBy, query, where } from "firebase/firestore"
+import { collection, doc, getDocs, limit, orderBy, query, updateDoc, where } from "firebase/firestore"
 import { IPost } from "../components/Timeline"
 import PostUI from "../components/PostUI"
 
@@ -42,6 +42,35 @@ const Posts = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+`
+
+const EditName = styled.button`
+  background-color: tomato;
+  border: 1px solid tomato;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 3px 7px;
+`
+const NameWrap= styled.div`
+
+`
+const NameInput = styled.input`
+  outline: none;
+  border-radius: 20px;
+  padding: 3px 5px;
+ 
+`
+const EditSubmit = styled.button`
+  background-color: tomato;
+  border: 1px solid tomato;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 3px 7px;
+  margin-left: 10px;
 `
 export default function Profile() {
   const user = auth.currentUser
@@ -86,8 +115,35 @@ export default function Profile() {
       }
     })
     setPosts(posts)
+  } //fetch post 
+  useEffect(()=>{fetchPost()},[]) 
+
+  const [editName, setEditName] = useState(false)
+  const [name, setName]=useState('')
+
+  const changeName = (e:React.ChangeEvent<HTMLInputElement>)=>{
+    setName(e.target.value)
   }
-  useEffect(()=>{fetchPost()},[])
+
+  const onEditName = async ()=>{
+    if(!user) return;
+    setEditName((prev) => !prev);
+    if(!editName) return;
+    try{
+      await updateProfile(user,{
+        displayName : name,
+      })
+    }catch(e){
+      console.log(e)
+    }finally{
+      setEditName(false)
+    }
+
+  }
+
+  
+ 
+
 
   return (
     <>
@@ -99,9 +155,22 @@ export default function Profile() {
         </AvatarUpload>
 
         <AvatarInput onChange={onAvatarChange} id="avatar" accept='image/*' type='file' />
-        <Name>
-          {user?.displayName ? user.displayName : 'anonymous'}
-        </Name>
+
+         
+          {editName ?  <NameInput onChange={changeName} value={name} type="text"></NameInput> :  
+          <Name>
+            {user?.displayName ? user.displayName : 'anonymous'}
+          </Name> }
+
+
+          <NameWrap>
+           <EditName onClick={onEditName} >{editName ? '이름저장' : '이름수정'}</EditName>
+           {/* <EditSubmit onClick={onEditName}></EditSubmit> */}
+
+          </NameWrap>
+
+        
+
 
         <Posts>{posts.map(post => <PostUI key={post.id} {...post}/>)}</Posts>
 
