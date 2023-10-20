@@ -1,6 +1,5 @@
 import { styled } from "styled-components"
 import Post from "../components/Post"
-import { auth } from "../firebase"
 import Timeline from "../components/Timeline"
 
 

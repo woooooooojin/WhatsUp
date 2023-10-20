@@ -3,7 +3,7 @@ import { auth, db, storage } from "../firebase"
 import React, { useEffect, useState } from "react"
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage"
 import {  updateProfile } from "firebase/auth"
-import { collection, doc, getDocs, limit, orderBy, query, updateDoc, where } from "firebase/firestore"
+import { collection, getDocs, limit, orderBy, query, where } from "firebase/firestore"
 import { IPost } from "../components/Timeline"
 import PostUI from "../components/PostUI"
 
