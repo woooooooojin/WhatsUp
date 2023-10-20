@@ -221,7 +221,7 @@ export default function PostUI({username, photo, post, userId, id}:IPost) {
 
                     </Column> : null
                 }
-
+                {/*사진이 있으면 버튼이 보이고 없으면 null*/}
             
             </Wrapper>
         </Container>
