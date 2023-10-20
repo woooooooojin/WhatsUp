@@ -208,16 +208,21 @@ export default function PostUI({username, photo, post, userId, id}:IPost) {
                 {/* 작성한 유저와 로그인된 유저가 동일하면 버튼이 보임 */}
                 </Column>
                 
-                <Column>
-                    {photo ?  <Photo src={photo}/>: null}
-                     <EditPhotoInput onChange={onFileChange}  type="file" id="input_file" accept="image/*" />
-                     
-                     <BtnBox>
-                        {user?.uid === userId ? <EditPhotoBtn  htmlFor="input_file">사진선택</EditPhotoBtn> : null }
-                        <SubmitBtn  onClick={onClickFile}>저장하기</SubmitBtn>
-                     </BtnBox>
+                {
+                    photo ?  
+                    <Column>
+                        {photo ?  <Photo src={photo}/>: null}
+                        <EditPhotoInput onChange={onFileChange}  type="file" id="input_file" accept="image/*" />
+                        
+                        <BtnBox>
+                            {user?.uid === userId ? <EditPhotoBtn  htmlFor="input_file">사진선택</EditPhotoBtn> : null }
+                            <SubmitBtn  onClick={onClickFile}>저장하기</SubmitBtn>
+                        </BtnBox>
 
-                </Column> 
+                    </Column> : null
+                }
+
+            
             </Wrapper>
         </Container>
 
