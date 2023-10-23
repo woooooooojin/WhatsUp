@@ -22,10 +22,7 @@ export const Input = styled.input`
   border-radius: 50px;
   border: none;
   font-size: 16px;
-  &:focus{
-    outline: 2.5px dashed yellow;
-    
-  }
+  
   &[type='submit']{
     cursor: pointer;
     outline: none;

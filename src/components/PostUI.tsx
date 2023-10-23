@@ -207,7 +207,7 @@ export default function PostUI({username, photo, post, userId, id}:IPost) {
                 {edit ? (<TextArea onChange={onChange} rows={2} maxLength={150} value={value}></TextArea>) : (<Message>{post}</Message>)}
 
                 {user?.uid === userId ? <DeleteBtn onClick={onDelete}>삭제</DeleteBtn> : null }
-                {user?.uid === userId && edit === false ? <EditBtn  onClick={onEdit}>수정</EditBtn> : <EditBtn  onClick={onEdit}>수정완료</EditBtn>} 
+                { edit ?  <EditBtn  onClick={onEdit}>수정완료</EditBtn>  : (user?.uid === userId ? <EditBtn  onClick={onEdit}>수정</EditBtn> : null)} 
                 {/* 작성한 유저와 로그인된 유저가 동일하면 버튼이 보임 */}
                 </Column>
                 
