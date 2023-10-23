@@ -158,7 +158,7 @@ export default function PostUI({username, photo, post, userId, id}:IPost) {
         
             const {files} = e.target
 
-            if(files && files.length === 1 && files[0].size < 1024 * 1024){
+            if(files && files.length === 1 && files[0].size < 2 * 1024 * 1024){
                 setFile(files[0])
             }
             setEditFile(true)
