@@ -82,7 +82,7 @@ export default function Profile() {
 
     if(!user) return;
 
-    if(files && files.length ===1){
+    if(files && files.length ===1 && files[0].size < 2 * 1024 * 1024){
       const file = files[0]
       const locationRef = ref(storage,`avatars/${user?.uid}`)
       const result = await uploadBytes(locationRef,file)

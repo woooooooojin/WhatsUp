@@ -11,12 +11,12 @@ const Form = styled.form`
 `
 const TextArea = styled.textarea`
     width: 80%;
-    border: 2px solid #fff;
+    border: 2px dashed #ccc;
     padding: 20px;
     border-radius: 20px;
     font-size: 16px;
     color: #fff;
-    background-color: black;
+    background-color:transparent;
     resize: none;
     &::placeholder{
         font-size: 16px;

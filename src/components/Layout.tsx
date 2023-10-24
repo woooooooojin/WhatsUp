@@ -21,13 +21,13 @@ const MenuItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid #fff;
-  height: 50px;
-  width: 50px;
+  border: 2px solid steelblue;
+  height: 45px;
+  width: 45px;
   border-radius: 50%;
   svg{
-    width: 30px;
-    fill: #fff;
+    width: 25px;
+    fill: steelblue;
   }
   &.logout{
     border-color: tomato;
