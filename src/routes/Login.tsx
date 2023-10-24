@@ -45,7 +45,7 @@ export default function Login() {
   return (
     <>
       <Wrapper>
-        <Title>Log into What's Up</Title>
+        <Title>Login What's Up</Title>
         <Form onSubmit={onSubmit}>
 
 
