@@ -82,7 +82,7 @@ export default function Profile() {
 
     if(!user) return;
 
-    if(files && files.length ===1 && files[0].size < 2 * 1024 * 1024){
+    if(files && files.length ===1 && files[0].size < 3 * 1024 * 1024){
       const file = files[0]
       const locationRef = ref(storage,`avatars/${user?.uid}`)
       const result = await uploadBytes(locationRef,file)
@@ -91,6 +91,9 @@ export default function Profile() {
       await updateProfile( user , {
         photoURL : avatarUrl,
       })
+      if(files[0].size > 3 * 1024 * 1024){
+        alert('3MB 이하의 파일만 업로드 가능합니다.')
+      }
     }
 
   } //profile 사진변경
