@@ -39,6 +39,7 @@ const Name = styled.span`
   font-size: 22px;
 `
 const Posts = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 10px;
